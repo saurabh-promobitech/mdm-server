@@ -311,7 +311,7 @@ def queue(cmd, dev_UDID):
 
     # Send request to Apple
     wrapper = APNSNotificationWrapper('PushCert.pem', False)
-    #wrapper.connection.connect("gateway.push.apple.com",2195)
+    wrapper.connection.connect("gateway.push.apple.com",2195)
     message = APNSNotification()
     #message.connect("push.apple.com",2196)
     message.token(mylocal_DeviceToken)
@@ -319,7 +319,7 @@ def queue(cmd, dev_UDID):
     print("mylocal_PushMagic " + mylocal_PushMagic)
     message.setProperty('mdm',mylocal_PushMagic)
     wrapper.append(message)
-    wrapper.connection.connect("gateway.push.apple.com",2195)
+    #wrapper.connection.connect("gateway.push.apple.com",2195)
     wrapper.notify()
 
     
