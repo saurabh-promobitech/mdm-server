@@ -1,4 +1,4 @@
-# Copyright 2009-2011 Max Klymyshyn, Sonettic
+# Copyright 2009 Max Klymyshyn, Sonettic
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -10,7 +10,8 @@
 # limitations under the License.
 
 
-from .apnsexceptions import *
-from .connection import *
-from .notifications import *
-from .feedback import *
+from utils import _doublequote, if_else, find_executable
+from apnsexceptions import *
+from connection import *
+from notifications import *
+from feedback import *

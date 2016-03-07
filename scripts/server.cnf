@@ -4,5 +4,5 @@ nsCertType              = server
 keyUsage                = digitalSignature, keyEncipherment
 extendedKeyUsage        = serverAuth, nsSGC, msSGC
 #nsComment               = "OpenSSL Certificate for SSL Web Server"
-subjectAltName          = IP:192.168.1.113,DNS:192.168.1.113,URI:https://192.168.1.113:8080/
+subjectAltName          = IP:192.168.1.190,DNS:192.168.1.190,URI:https://192.168.1.190:8080/
 

@@ -1,4 +1,4 @@
-# Copyright 2009-2011 Max Klymyshyn, Sonettic
+# Copyright 2009 Max Klymyshyn, Sonettic
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -9,41 +9,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['APNSConnectionContext', 'OpenSSLCommandLine', 'APNSConnection',
-           'SSLModuleConnection']
 
 import os
 import socket
 import subprocess
 
-from apnsexceptions import (APNSNotImplementedMethod, APNSNoCommandFound,
-                            APNSCertificateNotFoundError,
-                            APNSNoSSLContextFound, APNSConnectionError)
-from utils import find_executable
-
+from apnsexceptions import *
+from utils import *
 
 class APNSConnectionContext(object):
-    """Abstract class to implement SSL secured connection factory object"""
     certificate = None
-
-    def __init__(self, certificate=None):
+    def __init__(self, certificate = None):
         self.certificate = certificate
-
     def connect(self, host, port):
-        raise APNSNotImplementedMethod("APNSConnectionContext.connect ssl "
-                                       "method not implemented in context")
-
-    def write(data=None):
-        raise APNSNotImplementedMethod("APNSConnectionContext.write "
-                                       "method not implemented")
-
+        raise APNSNotImplementedMethod, "APNSConnectionContext.connect ssl method not implemented in context"
+    def write(data = None):
+        raise APNSNotImplementedMethod, "APNSConnectionContext.write method not implemented"
     def read(self):
-        raise APNSNotImplementedMethod("APNSConnectionContext.read method "
-                                       "not implemented")
-
+        raise APNSNotImplementedMethod, "APNSConnectionContext.read method not implemented"
     def close(self):
-        raise APNSNotImplementedMethod("APNSConnectionContext.close method "
-                                       "not implemented")
+        raise APNSNotImplementedMethod, "APNSConnectionContext.close method not implemented"
+
 
 
 class OpenSSLCommandLine(APNSConnectionContext):
@@ -56,8 +42,7 @@ class OpenSSLCommandLine(APNSConnectionContext):
     port = None
     executable = None
     debug = False
-
-    def __init__(self, certificate=None, executable=None, debug=False):
+    def __init__(self, certificate = None, executable = None, debug = False):
         self.certificate = certificate
         self.executable = executable
         self.debug = debug
@@ -66,68 +51,55 @@ class OpenSSLCommandLine(APNSConnectionContext):
         self.host = host
         self.port = port
 
-    def command(self):
-        return ("%(executable)s s_client -cert "
-                "%(cert)s -connect %(host)s:%(port)s" % {
-                    'executable': self.executable,
-                    'cert': self.certificate,
-                    'host': self.host,
-                    'port': self.port,
-                })
+    def _command(self):
+        command = "%(executable)s s_client -tls1 -cert %(cert)s -connect %(host)s:%(port)s" % \
+            {
+            'executable' : self.executable,
+            'cert' : self.certificate,
+            'host' : self.host,
+            'port' : self.port
+            }
 
-    def run_command(self):
-        return subprocess.Popen(
-            self.command().split(' '),
-            shell=False,
-            bufsize=256,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
+        return subprocess.Popen(command.split(' '), shell=False, bufsize=256, \
+            stdin=subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
 
-    def write(self, data=None):
-        process = self.run_command()
+    def write(self, data = None):
+        pipe = self._command()
 
-        std_in = process.stdin
+        std_in = pipe.stdin
         std_in.write(data)
         std_in.flush()
         std_in.close()
 
-        stdout = process.stdout.read()
-        stderr = process.stderr.read()
+        std_out = pipe.stdout
         if self.debug:
             print "-------------- SSL Debug Output --------------"
-            print self.command()
+            print command
             print "----------------------------------------------"
-            print stdout
-        process.wait()
-        if process.returncode != 0:
-            raise APNSConnectionError(
-                'Error running SSL command.\n'
-                ('Original command: %s\n' % self.command)
-                ('Returned exit code %d\n' % process.returncode)
-                ('With the following stderr:\n%s' % stderr)
-                ('With the following stdout:\n%s' % stdout))
+            print std_out.read()
+            std_out.close()
+        pipe.wait()
 
-    def read(self, blockSize=1024):
+    def read(self, blockSize = 1024):
         """
         There is method to read data from feedback service.
         WARNING! It's not tested and doesn't work yet!
         """
-        process = self.run_command()
-        std_out = process.stdout
+        pipe = self._command()
+        std_out = pipe.stdout
 
         data = std_out.read()
 
-        # process.wait()
+        #pipe.wait()
         std_out.close()
         return data
+
 
     def context(self):
         return self
 
     def close(self):
         pass
-
 
 class SSLModuleConnection(APNSConnectionContext):
     """
@@ -140,7 +112,7 @@ class SSLModuleConnection(APNSConnectionContext):
     connectionContext = None
     ssl_module = None
 
-    def __init__(self, certificate=None, ssl_module=None):
+    def __init__(self, certificate = None, ssl_module = None):
         self.socket = None
         self.connectionContext = None
         self.certificate = certificate
@@ -150,33 +122,35 @@ class SSLModuleConnection(APNSConnectionContext):
         """
         Initialize SSL context.
         """
-        if self.connectionContext:
+        if self.connectionContext != None:
             return self
 
         self.socket = socket.socket()
         self.connectionContext = self.ssl_module.wrap_socket(
-            self.socket,
-            ssl_version=self.ssl_module.PROTOCOL_TLSv1,
-            certfile=self.certificate)
+                    self.socket,
+                    ssl_version = self.ssl_module.PROTOCOL_TLSv1,
+                    certfile = self.certificate
+                )
 
         return self
+
 
     def certificate(self, path):
         self.certificate = path
         return self
 
-    def read(self, blockSize=1024):
+    def read(self, blockSize = 1024):
         """
         Make connection to the host and port.
         """
 
         return self.connectionContext.read(blockSize)
 
-    def write(self, data=None):
+    def write(self, data = None):
         """
         Make connection to the host and port.
         """
-        
+
         self.connectionContext.write(data)
 
     def connect(self, host, port):
@@ -202,27 +176,25 @@ class APNSConnection(APNSConnectionContext):
     debug = False
     connectionContext = None
 
-    def __init__(self, certificate=None, ssl_command="openssl",
-                 force_ssl_command=False, disable_executable_search=False,
-                 debug=False):
-        self.certificate = certificate
+    def __init__(self, certificate = None,
+                        ssl_command = "openssl",
+                        force_ssl_command = False,
+                        disable_executable_search = False,
+                        debug = False):
         self.connectionContext = None
         self.debug = debug
 
-        if not os.path.exists(certificate):
-            raise APNSCertificateNotFoundError(
-                "Apple Push Notification Service Certificate file %s "
-                "not found." % certificate)
+        if not os.path.exists(str(certificate)):
+            raise APNSCertificateNotFoundError, "Apple Push Notification Service Certificate file %s not found." % str(certificate)
 
         try:
             if force_ssl_command:
-                raise ImportError("force_ssl_command skipping import")
+                raise ImportError, "There is force_ssl_command forces command line tool"
 
             # use ssl library to handle secure connection
             import ssl as ssl_module
-            self.connectionContext = SSLModuleConnection(certificate,
-                                                         ssl_module=ssl_module)
-        except ImportError:
+            self.connectionContext = SSLModuleConnection(certificate, ssl_module = ssl_module)
+        except:
             # use command line openssl tool to handle secure connection
             if not disable_executable_search:
                 executable = find_executable(ssl_command)
@@ -230,20 +202,16 @@ class APNSConnection(APNSConnectionContext):
                 executable = ssl_command
 
             if not executable:
-                raise APNSNoCommandFound(
-                    "SSL Executable [%s] not found in your PATH "
-                    % ssl_command)
+                raise APNSNoCommandFound, "SSL Executable [%s] not found in your PATH environment" % str(ssl_command)
 
-            self.connectionContext = OpenSSLCommandLine(certificate,
-                                                        executable,
-                                                        debug=debug)
+            self.connectionContext = OpenSSLCommandLine(certificate, executable, debug = debug)
+
+        self.certificate = str(certificate)
 
     def connect(self, host, port):
         """
         Make connection to the host and port.
         """
-        
-        print("host " + host + "port " + str(port))
         self.context().connect(host, port)
         return self
 
@@ -251,16 +219,15 @@ class APNSConnection(APNSConnectionContext):
         self.context().certificate(path)
         return self
 
-    def write(self, data=None):
+    def write(self, data = None):
         self.context().write(data)
 
-    def read(self, blockSize=1024):
+    def read(self, blockSize = 1024):
         return self.context().read(blockSize)
 
     def context(self):
         if not self.connectionContext:
-            raise APNSNoSSLContextFound("There is no SSL context available "
-                                        "in your python environment.")
+            raise APNSNoSSLContextFound, "There is no SSL context available in your python environment."
         return self.connectionContext.context()
 
     def close(self):

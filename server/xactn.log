@@ -11,25 +11,9 @@
 ## So if you want to send this to anyone, SCRUB IT FIRST
 ##
 
-Wed Mar  2 20:59:32 2016 {'BuildVersion': '13D15', 'SerialNumber': 'DX5NNFMCFRC6', 'MessageType': 'Authenticate', 'ProductName': 'iPhone6,2', 'Topic': 'com.apple.mgmt.External.8d896560-7596-46fd-8b01-261cc9a93513', 'UDID': 'e62acfb28e3e6faf02ae15cbde22b6a6ebee7f15', 'IMEI': '35 203706 285333 4', 'OSVersion': '9.2.1'}
-Wed Mar  2 20:59:32 2016 {}
-Wed Mar  2 21:19:54 2016 {'BuildVersion': '13D15', 'SerialNumber': 'DX5NNFMCFRC6', 'MessageType': 'Authenticate', 'ProductName': 'iPhone6,2', 'Topic': 'com.apple.mgmt.External.8d896560-7596-46fd-8b01-261cc9a93513', 'UDID': 'e62acfb28e3e6faf02ae15cbde22b6a6ebee7f15', 'IMEI': '35 203706 285333 4', 'OSVersion': '9.2.1'}
-Wed Mar  2 21:19:54 2016 {}
-Wed Mar  2 21:30:17 2016 {'Topic': 'com.apple.mgmt.External.8d896560-7596-46fd-8b01-261cc9a93513', 'UDID': '32913f8db6a6bc57e8352df9744d96c23a7241ad', 'MessageType': 'Authenticate'}
-Wed Mar  2 21:30:17 2016 {}
-Thu Mar  3 12:33:27 2016 {'Topic': 'com.apple.mgmt.External.8d896560-7596-46fd-8b01-261cc9a93513', 'UDID': '32913f8db6a6bc57e8352df9744d96c23a7241ad', 'MessageType': 'Authenticate'}
-Thu Mar  3 12:33:27 2016 {}
-Thu Mar  3 12:33:48 2016 {'BuildVersion': '13D15', 'SerialNumber': 'DX5NNFMCFRC6', 'MessageType': 'Authenticate', 'ProductName': 'iPhone6,2', 'Topic': 'com.apple.mgmt.External.8d896560-7596-46fd-8b01-261cc9a93513', 'UDID': 'e62acfb28e3e6faf02ae15cbde22b6a6ebee7f15', 'IMEI': '35 203706 285333 4', 'OSVersion': '9.2.1'}
-Thu Mar  3 12:33:48 2016 {}
-Fri Mar  4 16:00:20 2016 {'BuildVersion': '13D15', 'SerialNumber': 'DX5NNFMCFRC6', 'MessageType': 'Authenticate', 'ProductName': 'iPhone6,2', 'Topic': 'com.apple.mgmt.External.8d896560-7596-46fd-8b01-261cc9a93513', 'UDID': 'e62acfb28e3e6faf02ae15cbde22b6a6ebee7f15', 'IMEI': '35 203706 285333 4', 'OSVersion': '9.2.1'}
-Fri Mar  4 16:00:20 2016 {}
-Fri Mar  4 16:11:48 2016 {'Topic': 'com.apple.mgmt.External.8d896560-7596-46fd-8b01-261cc9a93513', 'UDID': '32913f8db6a6bc57e8352df9744d96c23a7241ad', 'MessageType': 'Authenticate'}
-Fri Mar  4 16:11:48 2016 {}
-Fri Mar  4 16:33:28 2016 {'Topic': 'com.apple.mgmt.External.8d896560-7596-46fd-8b01-261cc9a93513', 'UDID': '32913f8db6a6bc57e8352df9744d96c23a7241ad', 'MessageType': 'Authenticate'}
-Fri Mar  4 16:33:28 2016 {}
-Fri Mar  4 18:49:33 2016 {'Topic': 'com.apple.mgmt.External.8d896560-7596-46fd-8b01-261cc9a93513', 'UDID': '32913f8db6a6bc57e8352df9744d96c23a7241ad', 'MessageType': 'Authenticate'}
-Fri Mar  4 18:49:33 2016 {}
-Fri Mar  4 18:49:33 2016 {'BuildVersion': '13D15', 'SerialNumber': 'DX5NNFMCFRC6', 'MessageType': 'Authenticate', 'ProductName': 'iPhone6,2', 'Topic': 'com.apple.mgmt.External.8d896560-7596-46fd-8b01-261cc9a93513', 'UDID': 'e62acfb28e3e6faf02ae15cbde22b6a6ebee7f15', 'IMEI': '35 203706 285333 4', 'OSVersion': '9.2.1'}
-Fri Mar  4 18:49:33 2016 {}
-Fri Mar  4 20:00:41 2016 {'Topic': 'com.apple.mgmt.External.8d896560-7596-46fd-8b01-261cc9a93513', 'UDID': '32913f8db6a6bc57e8352df9744d96c23a7241ad', 'MessageType': 'Authenticate'}
-Fri Mar  4 20:00:41 2016 {}
+Mon Mar  7 15:53:40 2016 {'BuildVersion': '13D15', 'SerialNumber': 'DX5NNFMCFRC6', 'MessageType': 'Authenticate', 'ProductName': 'iPhone6,2', 'Topic': 'com.apple.mgmt.External.1b7d372f-9cb8-4de4-87aa-99aa2845cc8b', 'UDID': 'e62acfb28e3e6faf02ae15cbde22b6a6ebee7f15', 'IMEI': '35 203706 285333 4', 'OSVersion': '9.2.1'}
+Mon Mar  7 15:53:40 2016 {}
+Mon Mar  7 16:05:15 2016 {'BuildVersion': '13D15', 'SerialNumber': 'DX5NNFMCFRC6', 'MessageType': 'Authenticate', 'ProductName': 'iPhone6,2', 'Topic': 'com.apple.mgmt.External.1b7d372f-9cb8-4de4-87aa-99aa2845cc8b', 'UDID': 'e62acfb28e3e6faf02ae15cbde22b6a6ebee7f15', 'IMEI': '35 203706 285333 4', 'OSVersion': '9.2.1'}
+Mon Mar  7 16:05:15 2016 {}
+Mon Mar  7 16:56:07 2016 {'BuildVersion': '13D15', 'SerialNumber': 'DX5NNFMCFRC6', 'MessageType': 'Authenticate', 'ProductName': 'iPhone6,2', 'Topic': 'com.apple.mgmt.External.1b7d372f-9cb8-4de4-87aa-99aa2845cc8b', 'UDID': 'e62acfb28e3e6faf02ae15cbde22b6a6ebee7f15', 'IMEI': '35 203706 285333 4', 'OSVersion': '9.2.1'}
+Mon Mar  7 16:56:07 2016 {}

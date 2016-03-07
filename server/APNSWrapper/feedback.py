@@ -1,4 +1,4 @@
-# Copyright 2009-2011 Max Klymyshyn, Sonettic
+# Copyright 2009 Max Klymyshyn, Sonettic
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -9,18 +9,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['APNSFeedbackWrapper']
-
 import datetime
 import sys
 import struct
 
-from .connection import APNSConnection
-
-
-def enlargeRecursionLimit(self):
-    sys.setrecursionlimit(sys.getrecursionlimit() + 100)
-
+from connection import *
 
 class APNSFeedbackWrapper(object):
     """
@@ -35,23 +28,19 @@ class APNSFeedbackWrapper(object):
     connection = None
     testingParser = False
 
-    blockSize = 1024   # default size of SSL reply block is 1Kb
+    blockSize = 1024 # default size of SSL reply block is 1Kb
     feedbackHeaderSize = 6
+
+    enlargeRecursionLimit = lambda self: sys.setrecursionlimit(sys.getrecursionlimit() + 100)
 
     _currentTuple = 0
     _tuplesCount = 0
 
-    def __init__(self,
-                 certificate=None,
-                 sandbox=True,
-                 force_ssl_command=False,
-                 debug_ssl=False):
+    def __init__(self, certificate = None, sandbox = True, force_ssl_command = False, debug_ssl = False):
         self.debug_ssl = debug_ssl
         self.force_ssl_command = False
-        self.connection = APNSConnection(
-            certificate=certificate,
-            force_ssl_command=self.force_ssl_command,
-            debug=self.debug_ssl)
+        self.connection = APNSConnection(certificate = certificate, \
+                            force_ssl_command = self.force_ssl_command, debug = self.debug_ssl)
 
         self.sandbox = sandbox
         self.feedbacks = []
@@ -74,11 +63,8 @@ class APNSFeedbackWrapper(object):
         offset = 0
         while(flag):
             try:
-                feedbackTime, tokenLength = struct.unpack_from('!lh',
-                                                               reply,
-                                                               offset)
-                deviceToken = struct.unpack_from('%ds' % tokenLength, reply,
-                                                 offset + 6)[0]
+                feedbackTime, tokenLength = struct.unpack_from('!lh', reply, offset)
+                deviceToken = struct.unpack_from('%ds' % tokenLength, reply, offset + 6)[0]
                 offset += 6 + len(deviceToken)
 
                 self._append(feedbackTime, deviceToken)
@@ -108,16 +94,14 @@ class APNSFeedbackWrapper(object):
         try:
             feedbackTime, tokenLength = struct.unpack_from('!lh', Buff, 0)
             if Buff >= self.feedbackHeaderSize + tokenLength:
-                def recursiveInvoke():
-                    self._parseTuple(feedbackTime, tokenLength,
-                                     Buff[self.feedbackHeaderSize:])
+                recoursiveInvoke = lambda: self._parseTuple(feedbackTime, tokenLength, Buff[self.feedbackHeaderSize:])
 
                 # enlarge recursion limit if it is exceeded
                 try:
-                    return recursiveInvoke()
+                    return recoursiveInvoke()
                 except RuntimeError:
-                    enlargeRecursionLimit()
-                    return recursiveInvoke()
+                    self.enlargeRecursionLimit()
+                    return recoursiveInvoke()
             else:
                 return Buff
         except:
@@ -141,7 +125,7 @@ class APNSFeedbackWrapper(object):
         try:
             return recurrenceInvoke()
         except RuntimeError:
-            enlargeRecursionLimit()
+            self.enlargeRecursionLimit()
             return recurrenceInvoke()
 
     def _testFeedbackFile(self):
@@ -156,7 +140,11 @@ class APNSFeedbackWrapper(object):
         """
 
         apnsConnection = self.connection
-        apnsHost = self.apnsHost if not self.sandbox else self.apnsSandboxHost
+
+        if self.sandbox != True:
+            apnsHost = self.apnsHost
+        else:
+            apnsHost = self.apnsSandboxHost
 
         apnsConnection.connect(apnsHost, self.apnsPort)
 
@@ -173,8 +161,7 @@ class APNSFeedbackWrapper(object):
         while replyBlock:
             if tRest and len(tRest) > 0:
                 # merge previous rest of replyBlock and new
-                replyBlock = struct.pack('!%ds%ds' % (
-                    len(tRest), len(replyBlock)), tRest, replyBlock)
+                replyBlock = struct.pack('!%ds%ds' % (len(tRest), len(replyBlock)), tRest, replyBlock)
             tRest = self._parseHeader(replyBlock)
             replyBlock = apnsConnection.read(blockSize)
 

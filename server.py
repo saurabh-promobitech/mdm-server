@@ -1,6 +1,6 @@
 import web, os, json, uuid, sys
 import cPickle as pickle
-import socket #parag
+import socket #SrB
 from device import device # Custom device class
 from plistlib import *
 from APNSWrapper import *
@@ -48,7 +48,7 @@ LOGFILE = 'xactn.log'
 
 # Dummy socket to get the hostname
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(('192.168.1.190', 8080))
+s.connect(('192.168,1,190', 8080))
 
 # NOTE: Will need to overwrite this if behind a firewall
 MY_ADDR = s.getsockname()[0] + ":8080"
@@ -302,7 +302,6 @@ def queue(cmd, dev_UDID):
     for key in device_list:
         if device_list[key].UDID == dev_UDID:
             device_list[key].addCommand(cmd_data)
-            print "cmd_data " + str(cmd_data)
             print "*Adding CMD:", cmd_data['CommandUUID'], "to device:", key
             break
 
@@ -310,16 +309,11 @@ def queue(cmd, dev_UDID):
 
 
     # Send request to Apple
-    wrapper = APNSNotificationWrapper('PushCert.pem', sandbox=True, debug_ssl=True)
-    #wrapper.connection.connect("gateway.push.apple.com",2195)
+    wrapper = APNSNotificationWrapper('PushCert.pem', False)
     message = APNSNotification()
-    #message.connect("push.apple.com",2196)
     message.token(mylocal_DeviceToken)
     message.appendProperty(APNSProperty('mdm', mylocal_PushMagic))
-    #print("mylocal_PushMagic " + mylocal_PushMagic)
-    #message.setProperty('mdm',mylocal_PushMagic)
     wrapper.append(message)
-    #wrapper.connection.connect("gateway.push.apple.com",2195)
     wrapper.notify()
 
     

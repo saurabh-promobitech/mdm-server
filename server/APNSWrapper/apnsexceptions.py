@@ -1,4 +1,4 @@
-# Copyright 2009-2011 Max Klymyshyn, Sonettic
+# Copyright 2009 Max Klymyshyn, Sonettic
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -10,11 +10,6 @@
 # limitations under the License.
 
 
-__all__ = ['APNSNotImplementedMethod', 'APNSNoSSLContextFound',
-           'APNSNoCommandFound', 'APNSTypeError', 'APNSPayloadLengthError',
-           'APNSCertificateNotFoundError', 'APNSValueError',
-           'APNSUndefinedDeviceToken', 'APNSConnectionError']
-
 
 class APNSNotImplementedMethod(Exception):
     """
@@ -23,10 +18,8 @@ class APNSNotImplementedMethod(Exception):
     """
     def __init__(self, value):
         self.value = value
-
     def __str__(self):
         return repr(self.value)
-
 
 class APNSNoSSLContextFound(Exception):
     """
@@ -35,7 +28,6 @@ class APNSNoSSLContextFound(Exception):
     """
     def __init__(self, value):
         self.value = value
-
     def __str__(self):
         return repr(self.value)
 
@@ -47,10 +39,8 @@ class APNSNoCommandFound(Exception):
     """
     def __init__(self, value):
         self.value = value
-
     def __str__(self):
         return repr(self.value)
-
 
 class APNSTypeError(Exception):
     """
@@ -59,22 +49,17 @@ class APNSTypeError(Exception):
     """
     def __init__(self, value):
         self.value = value
-
     def __str__(self):
         return repr(self.value)
-
 
 class APNSPayloadLengthError(Exception):
     """
-    If length of payload more than 256 (by APNS specification)
-    generate this exception
+    If length of payload more than 256 (by APNS specification) generate this exception
     """
     def __init__(self, value):
         self.value = value
-
     def __str__(self):
         return repr(self.value)
-
 
 class APNSCertificateNotFoundError(Exception):
     """
@@ -83,10 +68,8 @@ class APNSCertificateNotFoundError(Exception):
     """
     def __init__(self, value):
         self.value = value
-
     def __str__(self):
         return repr(self.value)
-
 
 class APNSValueError(Exception):
     """
@@ -95,10 +78,8 @@ class APNSValueError(Exception):
     """
     def __init__(self, value):
         self.value = value
-
     def __str__(self):
         return repr(self.value)
-
 
 class APNSUndefinedDeviceToken(Exception):
     """
@@ -107,7 +88,6 @@ class APNSUndefinedDeviceToken(Exception):
     """
     def __init__(self, value):
         self.value = value
-
     def __str__(self):
         return repr(self.value)
 
@@ -120,6 +100,5 @@ class APNSConnectionError(Exception):
     """
     def __init__(self, value):
         self.value = value
-
     def __str__(self):
         return repr(self.value)
