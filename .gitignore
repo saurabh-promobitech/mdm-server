@@ -1,5 +1,6 @@
 # Python related files
 server/*.pyc
+*.pyc
 
 # Logs/storage with possible sensitive information
 server/xactn.log
